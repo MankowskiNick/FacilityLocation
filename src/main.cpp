@@ -1,18 +1,18 @@
 // Nick Mankowski
 // CS 490 - Fall 2022
 // Prof. Sean McCulloch
-// Knapsack
+// Facility Location
 
 // Instructions to run
 //  1) Build the program
 //  2) Run the executable generated with the filenames you 
 //     would like to generate outputs for.  For example, 
-//     "Knapsack.cpp ks_4_0 ks_200_0 ks_500_0"
+//     "./FacilityLocation fl_3_1 fl_16_1 fl_16_2"
 //     would generate output files for the the three listed input files.
 //  3) The output files will match the names of the input files in the same directory, 
 //     but will have "OUTPUT_" before the input file name.  For example, 
-//     "Knapsack.cpp ks_4_0 ks_200_0 ks_500_0"
-//     will generate OUTPUT_ks_4_0, OUTPUT_ks_200_0, OUTPUT_ks_500_0
+//     "./FacilityLocation fl_3_1 fl_16_1 fl_16_2"
+//     will generate OUTPUT_fl_3_1, OUTPUT_fl_16_1, OUTPUT_fl_16_2
 
 #include <iostream>
 #include <fstream>
@@ -25,7 +25,7 @@
 int main(int argc, char* args[]) {
 
     // Look at each file listed in the command line arguments(did this so I don't have to keep running again and typing different file names)
-    // Argument 1 is the "./Knapsack" command, so we have to start looking at args[1] to get file names
+    // Argument 1 is the "./FacilityLocation" command, so we have to start looking at args[1] to get file names
     for (int fileIndex = 1; fileIndex < argc; fileIndex++) {    
 
         // Declare a file input stream & file output stream
@@ -47,8 +47,9 @@ int main(int argc, char* args[]) {
         AssertInputFileOpenSuccess(fin.fail(), inputFile);
 
         // TODO: Map input data to proper data structure
+        
 
-        // TODO: Generate tour
+        // TODO: Find optimal facility locations
 
         // Open the output file
         fout.open(outputFile.data());
