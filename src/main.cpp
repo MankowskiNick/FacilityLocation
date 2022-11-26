@@ -20,6 +20,9 @@
 #include <time.h>
 
 #include "iolib.h"
+#include "lib.h"
+#include "facility.h"
+#include "customer.h"
 
 // Take arguments from command line
 int main(int argc, char* args[]) {
@@ -46,15 +49,27 @@ int main(int argc, char* args[]) {
         // Assert that the input file successfully opened
         AssertInputFileOpenSuccess(fin.fail(), inputFile);
 
-        // TODO: Map input data to proper data structure
+        // Map input data to proper data structures
+        std::vector<Facility> facilities;
+        std::vector<Customer> customers;
+        InputMapper(fin, facilities, customers);
         
 
-        // TODO: Find optimal facility locations
+        // Find optimal facility locations
+        double result = CalculateFacilityLocations(facilities, customers);
+        std::cout << inputFile << "\n     -result=" << result << "\n\n";
 
         // Open the output file
         fout.open(outputFile.data());
 
         // TODO: Output data
+        //std::string output = "";
+        fout << result << "\n";
+        for (int i = 0; i < customers.size(); i++) {
+            fout << customers[i].GetFacilityId() << " ";
+        }
+        fout << "\n";
+
         // Close the input & output files
         fin.close();
         fout.close();
