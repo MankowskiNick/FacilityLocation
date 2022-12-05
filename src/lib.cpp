@@ -10,7 +10,7 @@
 #include "quicksort.h"
 
 #define TIME_MAX 60
-#define START_TEMP_SCALAR 700
+#define START_TEMP_SCALAR 1000
 #define TEMP_MIN 1
 
 void InputMapper(std::ifstream& fin, std::vector<Facility>& facilities, std::vector<Customer>& customers) {
