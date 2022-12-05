@@ -62,8 +62,7 @@ int main(int argc, char* args[]) {
         // Open the output file
         fout.open(outputFile.data());
 
-        // TODO: Output data
-        //std::string output = "";
+        // Output data
         fout << result << "\n";
         for (int i = 0; i < customers.size(); i++) {
             fout << customers[i].GetFacilityId() << " ";

@@ -10,10 +10,8 @@
 #include "quicksort.h"
 
 #define TIME_MAX 60
-#define START_TEMP_SCALAR 100
+#define START_TEMP_SCALAR 300
 #define TEMP_MIN 1
-//#define PERCENT_CHANGES 0.05
-#define PERCENTAGE_CUSTOMER_MOVES 0.4
 
 void InputMapper(std::ifstream& fin, std::vector<Facility>& facilities, std::vector<Customer>& customers) {
     int num_facilities = 0;
@@ -77,7 +75,6 @@ double ScoreResult(std::vector<Facility>& facilities, std::vector<Customer>& cus
 }
 
 void PickClosestFacility(Customer& cur_cust, std::vector<Facility>& facilities) {
-    //double smallest_dist = DBL_MAX;
     int facility_index = -1;
     std::vector<double> facility_distances;
     std::vector<int> facility_ids;
@@ -103,24 +100,10 @@ double GetGreedySolution(std::vector<Facility>& facilities, std::vector<Customer
     for (int i = 0; i < customers.size(); i++) {
         PickClosestFacility(customers[i], facilities);
     }
-    /*
-    for (int i = 0; i < facilities.size(); i++) {
-        facilities[i].SeedCustomerList(customers);
-    }
-    */
-    /*
-    for (int i = 0; i < customers.size(); i++) {
-        int insert_facility_id = rand() % facilities.size();
-        while (!facilities[insert_facility_id].AssignCustomer(customers[i])) {
-            insert_facility_id = rand() % facilities.size();
-        }
-    }
-    */
     return ScoreResult(facilities, customers);
 }
 
 void MoveCustomer(std::vector<Facility>& facilities, std::vector<Customer>& customers, int cust_index) {
-    
     
     int old_facility_id = customers[cust_index].GetFacilityId();
     int new_facility_id = old_facility_id;
@@ -143,35 +126,8 @@ void MoveCustomer(std::vector<Facility>& facilities, std::vector<Customer>& cust
 }
 
 void MoveCustomers(std::vector<Facility>& facilities, std::vector<Customer>& customers) {
-
-    int num_moves = 1;//customers.size() * PERCENTAGE_CUSTOMER_MOVES;
-    for (int i = 0; i < num_moves; i++) {
-        int cust_id = rand() % customers.size();
-        //int facility_id = customers[cust_id].GetFacilityId();
-        MoveCustomer(facilities, customers, cust_id);
-    }
-    /*
-    int num_moves = customers.size() * PERCENTAGE_CUSTOMER_MOVES;
-    //std::vector<int> changed_customer_ids;
-    for (int i = 0; i < num_moves; i++) {
-        int cust_id = rand() % customers.size();
-        int facility_id = customers[cust_id].GetFacilityId();
-        if (facility_id != -1 && facility_id >= 0 && facility_id < facilities.size()) { // this can be better
-            facilities[facility_id].RemoveCustomer(customers[cust_id]);
-        }
-    }
-
-    // Reassign customers we can
-    for (int i = 0; i < customers.size(); i++) {
-        if (customers[i].GetFacilityId() == -1) {
-            for (int j = 0; j < facilities.size(); j++) {
-                if (facilities[j].AssignCustomer(customers[i])) {
-                    break;
-                }
-            }
-        }
-    }
-    */
+    int cust_id = rand() % customers.size();
+    MoveCustomer(facilities, customers, cust_id);
 }
 
 // Perform simulated annealing
@@ -226,7 +182,6 @@ double CalculateFacilityLocations(std::vector<Facility>& facilities, std::vector
     customer_annealing_results.push_back(customers);
     annealing_results.push_back(greedy_result);
 
-    //for (int i = 0; i < customers.size() * PERCENT_CHANGES; i++) {
     for (int i = 0; i < 20; i++) {
         std::vector<Facility> cur_facilities = std::vector<Facility>(facilities);
         std::vector<Customer> cur_customers = std::vector<Customer>(customers);
