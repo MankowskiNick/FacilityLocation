@@ -12,7 +12,7 @@
 #define TIME_MAX 60
 #define START_TEMP_SCALAR 100
 #define TEMP_MIN 1
-#define PERCENT_CHANGES 0.2
+//#define PERCENT_CHANGES 0.05
 #define PERCENTAGE_CUSTOMER_MOVES 0.4
 
 void InputMapper(std::ifstream& fin, std::vector<Facility>& facilities, std::vector<Customer>& customers) {
@@ -119,8 +119,39 @@ double GetGreedySolution(std::vector<Facility>& facilities, std::vector<Customer
     return ScoreResult(facilities, customers);
 }
 
+void MoveCustomer(std::vector<Facility>& facilities, std::vector<Customer>& customers, int cust_index) {
+    
+    
+    int old_facility_id = customers[cust_index].GetFacilityId();
+    int new_facility_id = old_facility_id;
+
+    while (new_facility_id == old_facility_id)
+        new_facility_id = rand() % facilities.size();
+
+    if (old_facility_id != -1)
+        facilities[old_facility_id].RemoveCustomer(customers[cust_index]);
+    if (facilities[new_facility_id].AssignCustomer(customers[cust_index])) {
+        return;
+    } else {
+        while(!facilities[new_facility_id].AssignCustomer(customers[cust_index])) {
+            int remove_id = facilities[new_facility_id].GetCustomerIds()[0];
+            facilities[new_facility_id].RemoveCustomer(customers[remove_id]);
+            MoveCustomer(facilities, customers, remove_id);
+        }
+        return;
+    }
+}
+
 void MoveCustomers(std::vector<Facility>& facilities, std::vector<Customer>& customers) {
+
     int num_moves = 1;//customers.size() * PERCENTAGE_CUSTOMER_MOVES;
+    for (int i = 0; i < num_moves; i++) {
+        int cust_id = rand() % customers.size();
+        //int facility_id = customers[cust_id].GetFacilityId();
+        MoveCustomer(facilities, customers, cust_id);
+    }
+    /*
+    int num_moves = customers.size() * PERCENTAGE_CUSTOMER_MOVES;
     //std::vector<int> changed_customer_ids;
     for (int i = 0; i < num_moves; i++) {
         int cust_id = rand() % customers.size();
@@ -140,6 +171,7 @@ void MoveCustomers(std::vector<Facility>& facilities, std::vector<Customer>& cus
             }
         }
     }
+    */
 }
 
 // Perform simulated annealing
@@ -194,7 +226,8 @@ double CalculateFacilityLocations(std::vector<Facility>& facilities, std::vector
     customer_annealing_results.push_back(customers);
     annealing_results.push_back(greedy_result);
 
-    for (int i = 0; i < customers.size() * PERCENT_CHANGES; i++) {
+    //for (int i = 0; i < customers.size() * PERCENT_CHANGES; i++) {
+    for (int i = 0; i < 20; i++) {
         std::vector<Facility> cur_facilities = std::vector<Facility>(facilities);
         std::vector<Customer> cur_customers = std::vector<Customer>(customers);
 

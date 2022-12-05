@@ -72,7 +72,7 @@ class Facility {
             // Default item index, since -1 is impossible as a vect position this will indicate an error
             int item_index = -1;
             int list_size = customer_ids.size();
-            for (int i = 0; i < list_size; i++) {
+            for (int i = 0; i < list_size && list_size > 0; i++) {
 
                 // If we've found the item we need to remove it by shifting all of 
                 // the elements to the right and then decrease vector size by 1.
@@ -93,6 +93,10 @@ class Facility {
                 return true;
             }
             return false;
+        }
+
+        std::vector<int> GetCustomerIds() {
+            return std::vector<int>(customer_ids);
         }
 
         bool operator==(Facility facility2) {
