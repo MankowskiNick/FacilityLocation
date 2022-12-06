@@ -12,6 +12,7 @@
 #define TIME_MAX 60
 #define START_TEMP_SCALAR 1000
 #define TEMP_MIN 1
+#define CUSTOMERS_FIRST_GREEDY 0 // 0 or 1
 
 void InputMapper(std::ifstream& fin, std::vector<Facility>& facilities, std::vector<Customer>& customers) {
     int num_facilities = 0;
@@ -97,9 +98,16 @@ void PickClosestFacility(Customer& cur_cust, std::vector<Facility>& facilities) 
 }
 
 double GetGreedySolution(std::vector<Facility>& facilities, std::vector<Customer>& customers) {
-    for (int i = 0; i < customers.size(); i++) {
-        PickClosestFacility(customers[i], facilities);
+    if (CUSTOMERS_FIRST_GREEDY == 1) {
+        for (int i = 0; i < customers.size(); i++) {
+            PickClosestFacility(customers[i], facilities);
+        }
+    } else {
+        for (int i = 0; i < facilities.size(); i++) {
+            facilities[i].SeedCustomerList(customers);
+        }
     }
+
     return ScoreResult(facilities, customers);
 }
 

@@ -4,7 +4,6 @@
 #include <iostream>
 #include <float.h>
 
-//#include "facility.h"
 class Customer {
     public:
         Customer(int initial_id, double initial_demand, double initial_x, double initial_y) {
